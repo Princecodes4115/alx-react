@@ -35,4 +35,3 @@ CourseListRow.defaultProps = {
 };
 
 export default CourseListRow;
-

@@ -13,4 +13,3 @@ describe("Header", () => {
     expect(wrapper.containsMatchingElement(<h1>School dashboard</h1>)).toEqual(true);
   });
 });
-

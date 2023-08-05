@@ -31,4 +31,3 @@ CourseList.defaultProps = {
 };
 
 export default CourseList;
-

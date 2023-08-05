@@ -24,4 +24,3 @@ describe("Course List Row component test", () => {
     expect(wrapper.find("tr").childAt(1).html()).toEqual("<td>test</td>");
   });
 });
-

@@ -13,4 +13,3 @@ describe("Header", () => {
     expect(wrapper.find("input")).toHaveLength(2);
   });
 });
-

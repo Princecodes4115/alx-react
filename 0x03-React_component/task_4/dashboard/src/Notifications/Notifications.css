@@ -2,7 +2,7 @@
   padding: 1em;
   border: 2px dashed red;
   position: absolute;
-  top: 2.5em;
+  top: 1.8em;
   right: 0;
 }
 
@@ -23,4 +23,3 @@
 [data-notification-type="urgent"] {
   color: red;
 }
-

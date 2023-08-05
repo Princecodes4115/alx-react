@@ -13,4 +13,3 @@ describe("Footer test", () => {
     expect(wrapper.text()).toEqual(`Copyright ${getFullYear()} - ${getFooterCopy()}`);
   });
 });
-
