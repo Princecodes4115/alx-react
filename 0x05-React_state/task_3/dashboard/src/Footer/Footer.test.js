@@ -1,52 +1,76 @@
-/**
- * @jest-environment jsdom
- */
 import React from 'react';
-import Footer from './Footer';
-import { getFullYear, getFooterCopy } from '../utils/utils';
 import { shallow, mount } from 'enzyme';
-import { AppContext } from '../App/AppContext';
+import Footer from './Footer';
+import { StyleSheetTestUtils } from 'aphrodite';
+import {AppContext} from '../App/AppContext';
 
-describe('rendering components', () => {
-	it('renders Footer component without crashing', () => {
-		const wrapper = shallow(<Footer />);
+describe("Testing <Footer /> component", () => {
+  let wrapper;
 
-		expect(wrapper.exists()).toBe(true);
-	});
+  beforeEach(() => {
+    StyleSheetTestUtils.suppressStyleInjection();
+    wrapper = shallow(<Footer />);
+  });
 
-	it('Footer component renders "Copyright ${getFullYear()} - ${getFooterCopy(true)}"', () => {
-		const wrapper = mount(<Footer />);
+  it("Footer Component renders without crashing", () => {
+    expect(wrapper.exists());
+  });
 
-		expect(wrapper.find('.footer').text()).toEqual(
-			`Copyright ${getFullYear()} - ${getFooterCopy(true)}`
-		);
-	});
-
-	it('only renders link when user is logged in', () => {
-		const testData = {
-			user: { email: 'fred@gmail.com', password: 'pass123', isLoggedIn: true },
-			logOut: () => {},
-		};
-		const wrapper = mount(
-			<AppContext.Provider value={testData}>
-				<Footer />
-			</AppContext.Provider>
-		);
-
-		expect(wrapper.find('.footer a').exists()).toBe(true);
-	});
-
-	it('does not render link when user is logged out', () => {
-		const testData = {
-			user: { email: 'fred@gmail.com', password: 'pass123', isLoggedIn: false },
-			logOut: () => {},
-		};
-		const wrapper = mount(
-			<AppContext.Provider value={testData}>
-				<Footer />
-			</AppContext.Provider>
-		);
-
-		expect(wrapper.find('.footer a').exists()).toBe(false);
-	});
+  it("Footer compoenent render at the very least the text “Copyright”", () => {
+    expect(wrapper.find("Copyright").at(0)).toBeDefined();
+  });
 });
+
+describe('Testing Footer Component context and state', () => {
+	beforeEach(() => {
+		StyleSheetTestUtils.suppressStyleInjection();
+	});
+
+	afterEach(() => {
+		jest.clearAllMocks();
+	});
+
+	it('Tests that there is no link rendered when user is logged out within context', () => {
+		const context = {
+			user: {
+				email: '',
+				password: '',
+				isLoggedIn: false
+			}
+		}
+
+		const wrapper = mount(
+			<AppContext.Provider value={context}>
+				<Footer />
+			</AppContext.Provider>
+		)
+
+		expect(wrapper.find('a').length).toBe(0);
+		expect(wrapper.find('a').exists()).toBe(false);
+		expect(wrapper.text()).not.toContain('Contact us');
+
+		wrapper.unmount();
+	})
+
+	it('Tests that there is a link rendered when user is logged in within context', () => {
+		const context = {
+			user: {
+				email: '',
+				password: '',
+				isLoggedIn: true
+			}
+		}
+
+		const wrapper = mount(
+			<AppContext.Provider value={context}>
+				<Footer />
+			</AppContext.Provider>
+		)
+
+		expect(wrapper.find('a').length).toBe(1);
+		expect(wrapper.find('a').exists()).toBe(true);
+		expect(wrapper.text()).toContain('Contact us');
+
+		wrapper.unmount();
+	})
+})

@@ -3,21 +3,26 @@ import React from "react";
 import Login from "./Login";
 import { StyleSheetTestUtils } from "aphrodite";
 
-beforeEach(() => {
-  StyleSheetTestUtils.suppressStyleInjection();
-});
-afterEach(() => {
-  StyleSheetTestUtils.clearBufferAndResumeStyleInjection();
-});
+describe("<Login />", () => {
+  beforeAll(() => {
+    StyleSheetTestUtils.suppressStyleInjection();
+  });
+  afterAll(() => {
+    StyleSheetTestUtils.clearBufferAndResumeStyleInjection();
+  });
 
-describe("Header", () => {
-  it("should render without crashing", () => {
+  it("Login renders without crashing", () => {
     const wrapper = shallow(<Login />);
     expect(wrapper.exists()).toEqual(true);
   });
-  it("should have 2 input tags and 2 label tags", () => {
+  it("Verify that the components render 2 input", () => {
     const wrapper = shallow(<Login />);
-    expect(wrapper.find("label")).toHaveLength(2);
-    expect(wrapper.find("input")).toHaveLength(2);
+    wrapper.update();
+    expect(wrapper.find("div input")).toHaveLength(2);
+  });
+  it("Verify that the components render 2 label", () => {
+    const wrapper = shallow(<Login />);
+    wrapper.update();
+    expect(wrapper.find("div label")).toHaveLength(2);
   });
 });

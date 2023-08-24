@@ -1,47 +1,45 @@
-import React from 'react';
-import { StyleSheet, css } from 'aphrodite';
+import React from "react";
+import { StyleSheet, css } from "aphrodite";
 
-const Login = () => {
+function Login() {
   return (
-    <>
-      <div className={css(styles.appBody, styles.small)}>
-        <h1>Log in to continue</h1>
-        <p>Login to access the full dashboard</p>
-        <label htmlFor="email">Email: </label>
-        <input className={css(styles.noBorder)} type="email" id="email" name="email" />
-        <label htmlFor="password">Password: </label>
-        <input className={css(styles.noBorder)} type="password" id="password" name="password" />
-        <button className={css(styles.yellowBorder)}>OK</button>
-      </div>
-    </>
+    <div className={css(styles.login)}>
+      <p>Login to access the full dashboard</p>
+      <label htmlFor="email">Email:</label>
+      <input type="email" id="email" className={css(styles.loginInput)} />
+      <label htmlFor="password">Password:</label>
+      <input type="password" id="password" className={css(styles.loginInput)} />
+      <button>OK</button>
+    </div>
   );
 }
 
+const screenSize = {
+  small: "@media screen and (max-width: 900px)",
+};
+
 const styles = StyleSheet.create({
-  appBody: {
-    minHeight: '50vh',
-    textAlign: 'left',
-    marginTop: '2rem',
-    marginLeft: '2rem',
+  login: {
+    margin: "50px",
+    flexGrow: 1,
+    [screenSize.small]: {
+      marginTop: "10px",
+      marginLeft: 0,
+      marginRight: 0,
+      marginBottom: 0,
+    },
   },
-  small: {
-    '@media (max-width: 900px)': {
-      display: 'grid',
-      justifyContent: 'center',
-    }
+
+  loginInput: {
+    marginLeft: "10px",
+    marginRight: "20px",
+    [screenSize.small]: {
+      display: "block",
+      marginLeft: 0,
+      marginTop: "10px",
+      marginBottom: "10px",
+    },
   },
-  noBorder: {
-    '@media (max-width: 900px)': {
-      border: 'none'
-    }
-  },
-  yellowBorder: {
-    '@media (max-width: 900px)': {
-      border: '2px solid gold',
-      backgroundColor: 'transparent',
-      width: '5vw'
-    }
-  }
-})
+});
 
 export default Login;

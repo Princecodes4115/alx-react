@@ -1,108 +1,65 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import { StyleSheet, css } from 'aphrodite';
 import PropTypes from 'prop-types';
 
-class Login extends React.Component {
-	constructor(props) {
-		super(props);
+function Login(props) {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [enableSubmit, setEnableSubmit] = useState(false);
 
-		this.handleLoginSubmit = this.handleLoginSubmit.bind(this);
-		this.handleChangeEmail = this.handleChangeEmail.bind(this);
-		this.handleChangePassword = this.handleChangePassword.bind(this);
-		this.state = {
-			email: '',
-			password: '',
-			enableSubmit: false,
-		};
-	}
+  const handleLoginSubmit = (e) => {
+    e.preventDefault();
+    props.logIn(e.target.elements.email.value, e.target.elements.password.value);
+  };
+  const handleChangeEmail = (e) => {
+    setEmail(e.target.value);
+  };
+  const handleChangePassword = (e) => {
+    setPassword(e.target.value);
+  };
 
-	handleLoginSubmit(e) {
-		e.preventDefault();
-		this.props.logIn(this.state.email, this.state.password);
-		this.setState({ isLoggedIn: true });
-	}
+  useEffect(() => {
+    if (email != '' && password != '') {
+      setEnableSubmit(true);
+    } else {
+      if (enableSubmit != false) {
+        setEnableSubmit(false);
+      }
+    }
+  }, [email, password]);
 
-	handleChangeEmail(event) {
-		this.setState({ email: event.target.value });
-		this.state.email !== '' && this.state.password !== ''
-			? this.setState({ enableSubmit: true })
-			: this.setState({ enableSubmit: false });
-	}
-
-	handleChangePassword(event) {
-		this.setState({ password: event.target.value });
-		this.state.email !== '' && this.state.password !== ''
-			? this.setState({ enableSubmit: true })
-			: this.setState({ enableSubmit: false });
-	}
-
-	render() {
-		return (
-			<>
-				<div className={css(styles.appBody, styles.small)}>
-					<h1>Log in to continue</h1>
-					<p>Login to access the full dashboard</p>
-					<form onSubmit={this.handleLoginSubmit}>
-						<label htmlFor='email'>Email: </label>
-						<input
-							className={css(styles.noBorder)}
-							type='email'
-							id='email'
-							name='email'
-							onChange={this.handleChangeEmail}
-							value={this.state.email}
-						/>
-						<label htmlFor='password'>Password: </label>
-						<input
-							className={css(styles.noBorder)}
-							type='password'
-							id='password'
-							name='password'
-							onChange={this.handleChangePassword}
-							value={this.state.password}
-						/>
-						<input
-							className={css(styles.yellowBorder)}
-							type='submit'
-							value='OK'
-							disabled={!this.state.enableSubmit}
-						/>
-					</form>
-				</div>
-			</>
-		);
-	}
+  return (
+    <React.Fragment>
+      <div className={css(loginStyles.appBody)}>
+        <p>Login to access the full dashboard</p>
+        <form onSubmit={handleLoginSubmit} >
+          <label htmlFor="email">Email: </label>
+          <input type="email" id="email" name="email" className={loginStyles.inputs} value={email} onChange={handleChangeEmail} />
+          <label htmlFor="password">Password: </label>
+          <input type="password" id="password" name="password" className={loginStyles.inputs} value={password} onChange={handleChangePassword} />
+          <input type="submit" value="Ok" disabled={!enableSubmit}/>
+        </form>
+      </div>
+    </React.Fragment>
+  )
 }
 
-Login.propTypes = {
-	logIn: PropTypes.func,
-};
-
-const styles = StyleSheet.create({
+const loginStyles = StyleSheet.create({
 	appBody: {
-		minHeight: '50vh',
-		textAlign: 'left',
-		marginTop: '2rem',
-		marginLeft: '2rem',
-	},
-	small: {
+    padding: '36px 24px',
 		'@media (max-width: 900px)': {
-			display: 'grid',
-			justifyContent: 'center',
-		},
+      display: 'flex',
+      flexDirection: 'column'
+    }
 	},
-	noBorder: {
-		'@media (max-width: 900px)': {
-			border: 'none',
-		},
-	},
-	yellowBorder: {
-		'@media (max-width: 900px)': {
-			border: '2px solid gold',
-			backgroundColor: 'transparent',
-			width: '5vw',
-		},
-	},
-});
+
+	inputs: {
+		margin: '0 16px 0 8px'
+	}
+})
+
+Login.propTypes = {
+  logIn: PropTypes.func
+};
 
 export default Login;

@@ -1,55 +1,55 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import logo from '../assets/holberton_logo.jpg';
 import { StyleSheet, css } from 'aphrodite';
-import holberton_logo from '../assets/holberton_logo.jpeg';
 import { AppContext } from '../App/AppContext';
 
-class Header extends React.Component {
-	render() {
-		const data = this.context;
-		return (
-			<React.Fragment>
-				<div className={css(styles.header)}>
-					<img src={holberton_logo} className={css(styles.logo)} alt='logo' />
-					<h1 className={css(styles.title)}>School dashboard</h1>
-				</div>
-				{data.user.isLoggedIn && (
-					<div className={css(styles.greeting)} id='logoutSection'>
-						Welcome {data.user.email}{' '}
-						<a className={css(styles.logout)} onClick={data.logOut}>
-							(logout)
-						</a>
-					</div>
-				)}
-			</React.Fragment>
-		);
-	}
+function Header() {
+  const { user, logOut } = useContext(AppContext);
+
+  return (
+    <>
+      <header className={css(headerStyles.appHeader)}>
+        <img src={logo} alt="logo" className={css(headerStyles.appLogo)}/>
+        <h1 className={css(headerStyles.h1)}>School dashboard</h1>
+      </header>
+
+      {
+      user.isLoggedIn && <section id="logoutSection">
+        <h2>Welcome<strong> {user.email} </strong><em><a href="#" onClick={logOut}>(logout)</a></em>
+        </h2>
+      </section>
+      }
+    </>
+  );
 }
 
-Header.contextType = AppContext;
+const headerStyles = StyleSheet.create({
+	h1: {
+		marginLeft: '10rem',
+    float: 'right',
+    flex: 2,
+    '@media (max-width: 900px)': {
+      margin: 'auto'
+    }
+	},
 
-const styles = StyleSheet.create({
-	header: {
+	appHeader: {
 		display: 'flex',
+		flexDirection: 'row',
 		alignItems: 'center',
-		fontSize: 'calc(10px + 2vmin)',
-		color: 'white',
-		'@media (max-width: 900px)': {
-			justifyContent: 'center',
-		},
+		color: '#E11D3F',
+		borderBottom: '1px solid #E11D3F',
+    width: '100%',
+    boxSizing: 'border-box'
 	},
-	title: {
-		color: 'red',
-	},
-	logo: {
-		height: '100px',
-		width: '100px',
-	},
-	greeting: {
-		marginTop: '1rem',
-	},
-	logout: {
-		cursor: 'pointer',
-	},
+
+	appLogo: {
+		maxHeight: '200px',
+		maxWidth: '200px',
+    height: 'auto',
+    width: 'auto',
+    flex: 1
+	}
 });
 
 export default Header;

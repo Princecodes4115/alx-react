@@ -1,50 +1,25 @@
-/**
- * @jest-environment jsdom
- */
+import { getFooterCopy, getFullYear, getLatestNotification } from './utils';
+import { StyleSheetTestUtils } from 'aphrodite';
 
-import React from "react";
-import { render, unmountComponentAtNode } from "react-dom";
-import { act } from "react-dom/test-utils";
-import { getFooterCopy, getFullYear, getLatestNotification } from "./utils";
-
-let container = null;
-beforeEach(() => {
-  // setup a DOM element as a render target
-  container = document.createElement("div");
-  document.body.appendChild(container);
-});
-
-afterEach(() => {
-  // cleanup on exiting
-  unmountComponentAtNode(container);
-  container.remove();
-  container = null;
-});
-
-it("renders the year 2021", () => {
-  act(() => {
-    render(getFullYear(), container);
+describe("Utils functions", () => {
+  beforeEach(() => {
+    StyleSheetTestUtils.suppressStyleInjection();
   });
-  expect(container.textContent).toBe("2021");
-});
 
-it("checks getFooterCopy returns the correct string when true", () => {
-  act(() => {
-    render(getFooterCopy(true), container);
+  test("getFullYear returns the correct year", () => {
+    expect(getFullYear()).toEqual(2022);
   });
-  expect(container.textContent).toBe("Holberton School");
-});
 
-it("checks getFooterCopy returns the correct string when false", () => {
-  act(() => {
-    render(getFooterCopy(false), container);
+  test("getFooterCopy returns the correct string when the argument is true", () => {
+    expect(getFooterCopy(true)).toEqual("Holberton School");
   });
-  expect(container.textContent).toBe("Holberton School main dashboard");
-});
 
-it("checks getLatestNotification returns the correct string", () => {
-  act(() => {
-    render(getLatestNotification(), container);
+  test("getFooterCopy returns the correct string when the argument is false", () => {
+    expect(getFooterCopy(false)).toEqual("Holberton School main dashboard");
   });
-  expect(container.textContent).toBe("<strong>Urgent requirement</strong> - complete by EOD");
+
+  test("getLatestNotification returns the expected string", () => {
+    expect(getLatestNotification()).toEqual("<strong>Urgent requirement</strong> - complete by EOD");
+  });
+
 });
